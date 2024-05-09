@@ -1,6 +1,5 @@
 package com.example.carshowroom;
 
-import android.os.Parcel;
 
 public class Car {
     public String id, maker, model, color, configuration, year;
@@ -15,15 +14,6 @@ public class Car {
         this.color = color;
         this.configuration = configuration;
         this.year = year;
-    }
-
-    private Car(Parcel in) {
-        id = in.readString();
-        maker = in.readString();
-        model = in.readString();
-        color = in.readString();
-        configuration = in.readString();
-        year = in.readString();
     }
 
     @Override
