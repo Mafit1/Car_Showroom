@@ -24,7 +24,7 @@ public class Car {
                 ", model='" + model + '\'' +
                 ", color='" + color + '\'' +
                 ", configuration='" + configuration + '\'' +
-                ", year=" + year +
+                ", year='" + year + '\'' +
                 '}';
     }
 }
