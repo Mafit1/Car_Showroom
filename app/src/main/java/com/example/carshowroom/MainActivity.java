@@ -3,6 +3,7 @@ package com.example.carshowroom;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDataBase;
+    private final String DATA_BASE_URL = "https://car-showroom-51ab0-default-rtdb.europe-west1.firebasedatabase.app/";
     private final String CAR_KEY = "car";
     private EditText searchEditText;
     private ListView carListView;
@@ -46,11 +48,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        mDataBase = FirebaseDatabase.getInstance("https://car-showroom-51ab0-default-rtdb.europe-west1.firebasedatabase.app/").getReference(CAR_KEY);
+        mDataBase = FirebaseDatabase.getInstance(DATA_BASE_URL).getReference(CAR_KEY);
         getDataFromDB();
 
         searchEditText = findViewById(R.id.search_edit_text);
         carListView = findViewById(R.id.car_list_view);
+        carListView.setClickable(true);
+        carListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Car selectedCar = carList.get(position);
+                Intent intent = new Intent(MainActivity.this, CarDetailsActivity.class);
+                intent.putExtra("selectedCar", selectedCar);
+                startActivity(intent);
+            }
+        });
         addCarButton = findViewById(R.id.add_car_button);
 
         carAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, carList);
@@ -67,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Car car = dataSnapshot.getValue(Car.class);
+                    car.setId(dataSnapshot.getKey());
                     assert car != null;
                     carList.add(car);
                 }

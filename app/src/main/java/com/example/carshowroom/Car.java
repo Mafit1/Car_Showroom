@@ -1,7 +1,9 @@
 package com.example.carshowroom;
 
 
-public class Car {
+import java.io.Serializable;
+
+public class Car implements Serializable {
     public String id, maker, model, color, configuration, year;
 
     public Car() {
@@ -15,7 +17,7 @@ public class Car {
         this.configuration = configuration;
         this.year = year;
     }
-
+    /*
     @Override
     public String toString() {
         return "Car{" +
@@ -26,5 +28,60 @@ public class Car {
                 ", configuration='" + configuration + '\'' +
                 ", year='" + year + '\'' +
                 '}';
+    }
+
+     */
+
+    public String getId() {
+        return id;
+    }
+
+    public String getMaker() {
+        return maker;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public String getConfiguration() {
+        return configuration;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setMaker(String maker) {
+        this.maker = maker;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public void setConfiguration(String configuration) {
+        this.configuration = configuration;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return maker + " " + model;
     }
 }
