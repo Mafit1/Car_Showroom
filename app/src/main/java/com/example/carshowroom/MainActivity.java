@@ -3,19 +3,13 @@ package com.example.carshowroom;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,14 +19,14 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CarAdapter.OnItemClickListener {
     private DatabaseReference mDataBase;
     private final String DATA_BASE_URL = "https://car-showroom-51ab0-default-rtdb.europe-west1.firebasedatabase.app/";
     private final String CAR_KEY = "car";
     private EditText searchEditText;
-    private ListView carListView;
+    private RecyclerView carRecyclerView;
     private Button addCarButton;
-    private ArrayAdapter<Car> carAdapter;
+    private CarAdapter carAdapter;
     private ArrayList<Car> carList = new ArrayList<>();
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,21 +46,23 @@ public class MainActivity extends AppCompatActivity {
         getDataFromDB();
 
         searchEditText = findViewById(R.id.search_edit_text);
-        carListView = findViewById(R.id.car_list_view);
-        carListView.setClickable(true);
-        carListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        carRecyclerView = findViewById(R.id.car_recycler_view);
+        addCarButton = findViewById(R.id.add_car_button);
+
+        carAdapter = new CarAdapter(carList, this);
+        carRecyclerView.setAdapter(carAdapter);
+        carRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        carAdapter.setOnItemClickListener(new CarAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(int position) {
+                // Обработка нажатия на элемент RecyclerView
                 Car selectedCar = carList.get(position);
                 Intent intent = new Intent(MainActivity.this, CarDetailsActivity.class);
                 intent.putExtra("selectedCar", selectedCar);
                 startActivity(intent);
             }
         });
-        addCarButton = findViewById(R.id.add_car_button);
-
-        carAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, carList);
-        carListView.setAdapter(carAdapter);
     }
 
     private void getDataFromDB() {
@@ -79,13 +75,12 @@ public class MainActivity extends AppCompatActivity {
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Car car = dataSnapshot.getValue(Car.class);
-                    car.setId(dataSnapshot.getKey());
                     assert car != null;
+                    car.setId(dataSnapshot.getKey());
                     carList.add(car);
                 }
                 carAdapter.notifyDataSetChanged();
             }
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -93,5 +88,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         mDataBase.addValueEventListener(valueEventListener);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        Car selectedCar = carList.get(position);
+        Intent intent = new Intent(MainActivity.this, CarDetailsActivity.class);
+        intent.putExtra("selectedCar", selectedCar);
+        startActivity(intent);
     }
 }
