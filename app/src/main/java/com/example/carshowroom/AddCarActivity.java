@@ -35,12 +35,13 @@ public class AddCarActivity extends AppCompatActivity {
         });
 
         addButton.setOnClickListener(v -> {
-            String id = mDataBase.getKey();
-            String maker = makerEditText.getText().toString();
-            String model = modelEditText.getText().toString();
-            String color = colorEditText.getText().toString();
-            String configuration = configurationEditText.getText().toString();
-            String year = yearEditText.getText().toString();
+            String id =             mDataBase.getKey();
+            String maker =          makerEditText.getText().toString();
+            String model =          modelEditText.getText().toString();
+            String color =          colorEditText.getText().toString();
+            String configuration =  configurationEditText.getText().toString();
+            String year =           yearEditText.getText().toString();
+
             if (TextUtils.isEmpty(maker) || TextUtils.isEmpty(model) || TextUtils.isEmpty(color) || TextUtils.isEmpty(configuration) || TextUtils.isEmpty(year)) {
                 Toast.makeText(this, "Заполните поля", Toast.LENGTH_SHORT).show();
                 return;
@@ -56,15 +57,13 @@ public class AddCarActivity extends AppCompatActivity {
     }
 
     private void init() {
-        makerEditText = findViewById(R.id.edit_text_maker);
-        modelEditText = findViewById(R.id.edit_text_model);
-        colorEditText = findViewById(R.id.edit_text_color);
+        makerEditText =         findViewById(R.id.edit_text_maker);
+        modelEditText =         findViewById(R.id.edit_text_model);
+        colorEditText =         findViewById(R.id.edit_text_color);
         configurationEditText = findViewById(R.id.edit_text_configuration);
-        yearEditText = findViewById(R.id.edit_text_year);
-        mDataBase = FirebaseDatabase.getInstance("https://car-showroom-51ab0-default-rtdb.europe-west1.firebasedatabase.app/").getReference(CAR_KEY);
-
-
-        cancelButton = findViewById(R.id.button_cancel);
-        addButton = findViewById(R.id.button_add);
+        yearEditText =          findViewById(R.id.edit_text_year);
+        mDataBase =             FirebaseDatabase.getInstance("https://car-showroom-51ab0-default-rtdb.europe-west1.firebasedatabase.app/").getReference(CAR_KEY);
+        cancelButton =          findViewById(R.id.button_cancel);
+        addButton =             findViewById(R.id.button_add);
     }
 }
