@@ -1,5 +1,6 @@
 package com.example.carshowroom;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -45,9 +46,24 @@ public class AuthenticationActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String email =      emailEditText.getText().toString();
+                String password =   passwordEditText.getText().toString();
 
+                signIn(email, password);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        if (user != null) {
+            Toast.makeText(this, "Вы вошли как " + user.getEmail(), Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void signUp(String email, String password) {
@@ -60,7 +76,9 @@ public class AuthenticationActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(AuthenticationActivity.this, "Вы успешно зарегистрировались", Toast.LENGTH_SHORT).show();
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    assert user != null;
+                    sendEmailVerification();
                 } else {
                     Toast.makeText(AuthenticationActivity.this, "Ошибка регистрации", Toast.LENGTH_SHORT).show();
                 }
@@ -68,14 +86,45 @@ public class AuthenticationActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-        if (user == null) {
-            Toast.makeText(this, "Пользователь не зарегистрирован", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Пользователь зарегистрирован", Toast.LENGTH_SHORT).show();
+    private void signIn(String email, String password) {
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(AuthenticationActivity.this, "Заполните поля", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    assert user != null;
+                    if (user.isEmailVerified()) {
+                        Toast.makeText(AuthenticationActivity.this, "Вы успешно вошли", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(AuthenticationActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(AuthenticationActivity.this, "Подтвердите вашу почту для входа", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(AuthenticationActivity.this, "Ошибка входа", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void sendEmailVerification() {
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        assert user != null;
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(AuthenticationActivity.this, "На вашу почту было отправлено письмо для подтверждения", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(AuthenticationActivity.this, "Ошибка подтверждения адреса", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

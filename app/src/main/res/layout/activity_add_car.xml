@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".AddCarActivity">
 
     <EditText
@@ -16,6 +17,8 @@
         android:ems="10"
         android:hint="Марка"
         android:inputType="text"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,6 +31,8 @@
         android:ems="10"
         android:hint="Цвет"
         android:inputType="text"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_model" />
 
@@ -40,6 +45,8 @@
         android:ems="10"
         android:hint="Модель"
         android:inputType="text"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_maker" />
 
@@ -52,6 +59,8 @@
         android:ems="10"
         android:hint="Комплектация"
         android:inputType="text"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_color" />
 
@@ -64,6 +73,8 @@
         android:ems="10"
         android:hint="Год выпуска"
         android:inputType="text"
+        android:textColorHint="@color/grey"
+        android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_configuration" />
 
@@ -73,6 +84,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
         android:text="Отмена"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -83,6 +96,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/white"
         android:text="Добавить"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

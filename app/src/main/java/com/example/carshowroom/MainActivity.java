@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,11 +22,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements CarAdapter.OnItemClickListener {
     private DatabaseReference mDataBase;
+    private FirebaseAuth firebaseAuth;
     private final String DATA_BASE_URL = "https://car-showroom-51ab0-default-rtdb.europe-west1.firebasedatabase.app/";
     private final String CAR_KEY = "car";
     private EditText searchEditText;
     private RecyclerView carRecyclerView;
-    private Button addCarButton;
+    private Button addCarButton, signOutButton;
     private CarAdapter carAdapter;
     private ArrayList<Car> carList = new ArrayList<>();
 
@@ -43,11 +45,13 @@ public class MainActivity extends AppCompatActivity implements CarAdapter.OnItem
 
     private void init() {
         mDataBase = FirebaseDatabase.getInstance(DATA_BASE_URL).getReference(CAR_KEY);
+        firebaseAuth = FirebaseAuth.getInstance();
         getDataFromDB();
 
         searchEditText = findViewById(R.id.search_edit_text);
         carRecyclerView = findViewById(R.id.car_recycler_view);
         addCarButton = findViewById(R.id.add_car_button);
+        signOutButton = findViewById(R.id.signOutButton);
 
         carAdapter = new CarAdapter(carList, this);
         carRecyclerView.setAdapter(carAdapter);
@@ -60,6 +64,15 @@ public class MainActivity extends AppCompatActivity implements CarAdapter.OnItem
                 Car selectedCar = carList.get(position);
                 Intent intent = new Intent(MainActivity.this, CarDetailsActivity.class);
                 intent.putExtra("selectedCar", selectedCar);
+                startActivity(intent);
+            }
+        });
+
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseAuth.signOut();
+                Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
                 startActivity(intent);
             }
         });

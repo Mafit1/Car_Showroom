@@ -3,6 +3,7 @@
     android:id="@+id/carTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:textColor="@color/black"
     android:textSize="18sp"
     android:padding="16dp"
     android:background="@drawable/car_item_background"/>
