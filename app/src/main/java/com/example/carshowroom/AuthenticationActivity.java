@@ -62,6 +62,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             Toast.makeText(this, "Вы вошли как " + user.getEmail(), Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
     }
