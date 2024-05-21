@@ -5,85 +5,87 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".CarDetailsActivity">
+    android:background="@color/white">
 
-    <TextView
-        android:id="@+id/maker"
+    <EditText
+        android:id="@+id/edit_text_maker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:ems="10"
+        android:hint="Марка"
+        android:inputType="text"
+        android:textColorHint="@color/grey"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/model"
+    <EditText
+        android:id="@+id/edit_text_color"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:ems="10"
+        android:hint="Цвет"
+        android:inputType="text"
+        android:textColorHint="@color/grey"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maker" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_model" />
 
-    <TextView
-        android:id="@+id/color"
+    <EditText
+        android:id="@+id/edit_text_model"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:ems="10"
+        android:hint="Модель"
+        android:inputType="text"
+        android:textColorHint="@color/grey"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/model" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_maker" />
 
-    <TextView
-        android:id="@+id/configuration"
+    <EditText
+        android:id="@+id/edit_text_configuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:ems="10"
+        android:hint="Комплектация"
+        android:inputType="text"
+        android:textColorHint="@color/grey"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/color" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_color" />
 
-    <TextView
-        android:id="@+id/year"
+    <EditText
+        android:id="@+id/edit_text_year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="TextView"
+        android:ems="10"
+        android:hint="Год выпуска"
+        android:inputType="text"
+        android:textColorHint="@color/grey"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/configuration" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_configuration" />
 
     <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/black"
-        android:textColor="@color/white"
-        android:text="Отмена"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/removeButton"
+        android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/black"
         android:textColor="@color/white"
-        android:text="Удалить"
+        android:text="Добавить"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

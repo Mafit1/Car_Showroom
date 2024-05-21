@@ -1,6 +1,5 @@
 package com.example.carshowroom;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +13,14 @@ import java.util.ArrayList;
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     private ArrayList<Car> carList;
-    private Context context;
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
         void onItemClick(int position);
     }
 
-    public CarAdapter(ArrayList<Car> carList, Context context) {
+    public CarAdapter(ArrayList<Car> carList) {
         this.carList = carList;
-        this.context = context;
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -40,7 +37,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull CarViewHolder holder, int position) {
         Car currentCar = carList.get(position);
-        holder.carTextView.setText(currentCar.getMaker() + " " +  currentCar.getModel());
+        holder.carTextView.setText(currentCar.getMaker() + " " + currentCar.getModel());
     }
 
     @Override
