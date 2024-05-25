@@ -9,15 +9,10 @@
     android:background="@color/white">
 
     <!-- Поле поиска -->
-    <EditText
-        android:id="@+id/search_edit_text"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Поиск (пока не работает)"
-        android:inputType="text"
-        android:maxLines="1"
-        android:textColorHint="@color/grey"
-        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/signOutButton"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_edit_text" />
+        app:layout_constraintTop_toBottomOf="@id/search_view" />
 
     <!-- Кнопка добавления автомобиля -->
     <Button

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,8 +33,8 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
     private FirebaseAuth firebaseAuth;
     private final String DATA_BASE_URL = "https://car-showroom-51ab0-default-rtdb.europe-west1.firebasedatabase.app/";
     private final String CAR_KEY = "car";
-    private EditText searchEditText;
     private RecyclerView carRecyclerView;
+    private SearchView searchView;
     private Button addCarButton, signOutButton;
     private CarAdapter carAdapter;
     private ArrayList<Car> carList = new ArrayList<>();
@@ -52,7 +53,7 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
         firebaseAuth = FirebaseAuth.getInstance();
         getDataFromDB();
 
-        searchEditText = view.findViewById(R.id.search_edit_text);
+        searchView = view.findViewById(R.id.search_view);
         carRecyclerView = view.findViewById(R.id.car_recycler_view);
         addCarButton = view.findViewById(R.id.add_car_button);
         signOutButton = view.findViewById(R.id.signOutButton);
@@ -112,6 +113,20 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
             transaction.replace(R.id.fragment_container, new AddCarFragment());
             transaction.addToBackStack(null);
             transaction.commit();
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                carAdapter.filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                carAdapter.filter(newText);
+                return false;
+            }
         });
     }
 
