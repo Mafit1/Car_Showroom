@@ -17,7 +17,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +36,7 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
     private SearchView searchView;
     private Button addCarButton, signOutButton;
     private CarAdapter carAdapter;
-    private ArrayList<Car> carList = new ArrayList<>();
+    private ArrayList<Car> carList;
 
     @Nullable
     @Override
@@ -51,14 +50,16 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
 
         mDataBase = FirebaseDatabase.getInstance(DATA_BASE_URL).getReference(CAR_KEY);
         firebaseAuth = FirebaseAuth.getInstance();
-        getDataFromDB();
+
+        carList = getDataFromDB();
+        //carAdapter = new CarAdapter(carList);
 
         searchView = view.findViewById(R.id.search_view);
         carRecyclerView = view.findViewById(R.id.car_recycler_view);
         addCarButton = view.findViewById(R.id.add_car_button);
         signOutButton = view.findViewById(R.id.signOutButton);
 
-        carAdapter = new CarAdapter(carList);
+
 
         carRecyclerView.setAdapter(carAdapter);
         carRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -130,20 +131,22 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
         });
     }
 
-    private void getDataFromDB() {
+    private ArrayList<Car> getDataFromDB() {
+        ArrayList<Car> list = new ArrayList<>();
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!carList.isEmpty()) {
-                    carList.clear();
+                if (!list.isEmpty()) {
+                    list.clear();
                 }
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Car car = dataSnapshot.getValue(Car.class);
                     assert car != null;
                     car.setId(dataSnapshot.getKey());
-                    carList.add(car);
+                    list.add(car);
                 }
+                carAdapter = new CarAdapter(list);
                 carAdapter.notifyDataSetChanged();
             }
 
@@ -153,6 +156,7 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
             }
         };
         mDataBase.addValueEventListener(valueEventListener);
+        return list;
     }
 
     @Override

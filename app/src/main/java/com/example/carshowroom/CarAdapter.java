@@ -48,6 +48,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     public void filter(String text) {
         carList.clear();
+
         if (text.isEmpty()) {
             carList.addAll(carListFull);
         } else {
@@ -58,6 +59,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
                 }
             }
         }
+
         notifyDataSetChanged();
     }
 
