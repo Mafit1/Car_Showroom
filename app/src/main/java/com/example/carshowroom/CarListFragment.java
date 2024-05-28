@@ -51,15 +51,15 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
         mDataBase = FirebaseDatabase.getInstance(DATA_BASE_URL).getReference(CAR_KEY);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        carList = getDataFromDB();
-        //carAdapter = new CarAdapter(carList);
+        // Пофиксить: Когда после поиска переходишь в след фрагмент и обратно то список не фильтруется заново
+        carList = new ArrayList<>();
+        carAdapter = new CarAdapter(carList);
+        getDataFromDB();
 
         searchView = view.findViewById(R.id.search_view);
         carRecyclerView = view.findViewById(R.id.car_recycler_view);
         addCarButton = view.findViewById(R.id.add_car_button);
         signOutButton = view.findViewById(R.id.signOutButton);
-
-
 
         carRecyclerView.setAdapter(carAdapter);
         carRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -80,6 +80,20 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
                 transaction.replace(R.id.fragment_container, carDetailsFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                carAdapter.filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                carAdapter.filter(newText);
+                return false;
             }
         });
 
@@ -115,39 +129,23 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
             transaction.addToBackStack(null);
             transaction.commit();
         });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                carAdapter.filter(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                carAdapter.filter(newText);
-                return false;
-            }
-        });
     }
 
-    private ArrayList<Car> getDataFromDB() {
-        ArrayList<Car> list = new ArrayList<>();
+    private void getDataFromDB() {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (!list.isEmpty()) {
-                    list.clear();
+                if (!carList.isEmpty()) {
+                    carList.clear();
                 }
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Car car = dataSnapshot.getValue(Car.class);
                     assert car != null;
                     car.setId(dataSnapshot.getKey());
-                    list.add(car);
+                    carList.add(car);
                 }
-                carAdapter = new CarAdapter(list);
-                carAdapter.notifyDataSetChanged();
+                carAdapter.updateData(carList);
             }
 
             @Override
@@ -156,7 +154,6 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
             }
         };
         mDataBase.addValueEventListener(valueEventListener);
-        return list;
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.List;
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     private ArrayList<Car> carList;
-    private ArrayList<Car> carListFull; // Полный список для фильтрации
+    ArrayList<Car> fullList;
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
@@ -21,7 +21,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     public CarAdapter(ArrayList<Car> carList) {
         this.carList = carList;
-        carListFull = new ArrayList<>(carList); // Создаем копию оригинального списка
+        this.fullList = new ArrayList<>(carList);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -46,20 +46,24 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         return carList.size();
     }
 
+    public void updateData(ArrayList<Car> newData) {
+        fullList.clear();
+        fullList.addAll(newData);
+        notifyDataSetChanged();
+    }
+
     public void filter(String text) {
         carList.clear();
-
         if (text.isEmpty()) {
-            carList.addAll(carListFull);
+            carList.addAll(fullList);
         } else {
             String query = text.toLowerCase().trim();
-            for (Car car : carListFull) {
+            for (Car car : fullList) {
                 if (car.getMaker().toLowerCase().contains(query) || car.getModel().toLowerCase().contains(query)) {
                     carList.add(car);
                 }
             }
         }
-
         notifyDataSetChanged();
     }
 
