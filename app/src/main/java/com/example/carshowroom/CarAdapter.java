@@ -59,7 +59,9 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         } else {
             String query = text.toLowerCase().trim();
             for (Car car : fullList) {
-                if (car.getMaker().toLowerCase().contains(query) || car.getModel().toLowerCase().contains(query)) {
+                String search = car.getMaker().toLowerCase() + " " + car.getModel().toLowerCase();
+                String search2 = car.getModel().toLowerCase() + " " + car.getMaker().toLowerCase();
+                if (search.contains(query) || search2.contains(query)) {
                     carList.add(car);
                 }
             }

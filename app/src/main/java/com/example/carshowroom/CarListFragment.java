@@ -45,6 +45,12 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        searchView.setQuery("", true);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
