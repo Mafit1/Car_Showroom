@@ -33,9 +33,9 @@
         android:layout_marginEnd="100dp"
         android:ems="10"
         android:hint="Пароль (Минимум 8 символов)"
-        android:inputType="text"
-        android:textColorHint="@color/grey"
+        android:inputType="textPassword"
         android:textColor="@color/black"
+        android:textColorHint="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />

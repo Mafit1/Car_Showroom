@@ -40,12 +40,12 @@ public class AddCarFragment extends Fragment {
         addButton =             view.findViewById(R.id.button_add);
 
         addButton.setOnClickListener(v -> {
-            String id =             mDataBase.getKey();
             String maker =          makerEditText.getText().toString();
             String model =          modelEditText.getText().toString();
             String color =          colorEditText.getText().toString();
             String configuration =  configurationEditText.getText().toString();
             String year =           yearEditText.getText().toString();
+            String id =             mDataBase.push().getKey();
 
             if (TextUtils.isEmpty(maker) || TextUtils.isEmpty(model) || TextUtils.isEmpty(color) || TextUtils.isEmpty(configuration) || TextUtils.isEmpty(year)) {
                 Toast.makeText(requireContext(), "Заполните поля", Toast.LENGTH_SHORT).show();
@@ -56,7 +56,7 @@ public class AddCarFragment extends Fragment {
             }
 
             Car newCar = new Car(id, maker, model, color, configuration, year);
-            mDataBase.push().setValue(newCar);
+            mDataBase.child(id).setValue(newCar);
 
             requireActivity().getSupportFragmentManager().popBackStack();
         });

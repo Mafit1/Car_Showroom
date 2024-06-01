@@ -1,6 +1,7 @@
 package com.example.carshowroom;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,18 +13,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class CarDetailsFragment extends Fragment {
     private DatabaseReference mDataBase;
+    private StorageReference mStorageRef;
     private final String DATA_BASE_URL = "https://car-showroom-51ab0-default-rtdb.europe-west1.firebasedatabase.app/";
     private final String CAR_KEY = "car";
     private Button deleteButton;
     private TextView makerTextView, modelTextView, colorTextView, configurationTextView, yearTextView;
+    private ImageView carImageView;
     private Car selectedCar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +50,24 @@ public class CarDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mDataBase = FirebaseDatabase.getInstance(DATA_BASE_URL).getReference(CAR_KEY);
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        carImageView = view.findViewById(R.id.carImage);
+
+        StorageReference imgRef = mStorageRef.child("car_photos/" + selectedCar.getId() + ".jpg");
+        imgRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Загрузка изображения в ImageView
+                Glide.with(requireContext()).load(uri).into(carImageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Обработка ошибок при загрузке изображения
+                Toast.makeText(requireContext(), "Ошибка загрузки изображения", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         makerTextView = view.findViewById(R.id.maker);
         makerTextView.setText("Марка: " + selectedCar.getMaker());
