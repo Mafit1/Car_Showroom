@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,9 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
     @Override
     public void onResume() {
         super.onResume();
-        searchView.setQuery("", true);
+        if (!TextUtils.isEmpty(searchView.getQuery())) {
+            searchView.setQuery("", true);
+        }
     }
 
     @Override
@@ -57,7 +60,6 @@ public class CarListFragment extends Fragment implements CarAdapter.OnItemClickL
         mDataBase = FirebaseDatabase.getInstance(DATA_BASE_URL).getReference(CAR_KEY);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // Пофиксить: Когда после поиска переходишь в след фрагмент и обратно то список не фильтруется заново
         carList = new ArrayList<>();
         carAdapter = new CarAdapter(carList);
         getDataFromDB();
